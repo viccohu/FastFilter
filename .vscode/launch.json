@@ -1,0 +1,37 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "FastPick (Hot Reload)",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "dotnet",
+            "args": [
+                "run",
+                "--project",
+                "${workspaceFolder}/FastPick/FastPick.csproj",
+                "--launch-profile",
+                "FastPick (Hot Reload)"
+            ],
+            "cwd": "${workspaceFolder}/FastPick",
+            "stopAtEntry": false,
+            "console": "internalConsole",
+            "env": {
+                "DOTNET_HOTRELOAD": "true",
+                "DOTNET_USE_POLLING_FILE_WATCHER": "true"
+            }
+        },
+        {
+            "name": "FastPick (Debug)",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/FastPick/bin/Debug/net9.0-windows10.0.19041.0/FastPick.exe",
+            "args": [],
+            "cwd": "${workspaceFolder}/FastPick",
+            "stopAtEntry": false,
+            "console": "internalConsole"
+        }
+    ]
+}

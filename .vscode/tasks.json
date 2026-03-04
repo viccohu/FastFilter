@@ -1,0 +1,58 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "build",
+                "${workspaceFolder}/FastPick/FastPick.csproj",
+                "/property:GenerateFullPaths=true",
+                "/consoleloggerparameters:NoSummary"
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "publish",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "publish",
+                "${workspaceFolder}/FastPick/FastPick.csproj",
+                "/property:GenerateFullPaths=true",
+                "/consoleloggerparameters:NoSummary"
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "watch",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "watch",
+                "run",
+                "--project",
+                "${workspaceFolder}/FastPick/FastPick.csproj",
+                "--launch-profile",
+                "FastPick (Hot Reload)"
+            ],
+            "problemMatcher": "$msCompile",
+            "isBackground": true
+        },
+        {
+            "label": "hot-reload",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "run",
+                "--project",
+                "${workspaceFolder}/FastPick/FastPick.csproj",
+                "--launch-profile",
+                "FastPick (Hot Reload)"
+            ],
+            "problemMatcher": "$msCompile",
+            "isBackground": true
+        }
+    ]
+}
