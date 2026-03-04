@@ -1,0 +1,44 @@
+# Visual Studio generated files and folders
+[Bb]in/
+[Oo]bj/
+[Dd]ebug/
+[Rr]elease/
+[Pp]ublish/
+[Cc]odeAnalysis/
+.vscode/
+.vs/
+*.csproj.user
+*.csproj.vspscc
+*.sln.docstates
+*.sln.vspscc
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# NuGet packages
+packages/
+*.nupkg
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+
+# OS generated files
+Thumbs.db
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+
+# Build outputs
+FastPick/bin/
+FastPick/obj/

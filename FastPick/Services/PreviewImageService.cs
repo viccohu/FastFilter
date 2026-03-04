@@ -90,7 +90,7 @@ public class PreviewImageService
     }
 
     /// <summary>
-    /// 加载 RAW 内嵌预览图
+    /// 加载 RAW 内嵌预览图（使用 WIC 解码器）
     /// </summary>
     private async Task<BitmapImage?> LoadRawEmbeddedPreviewAsync(string rawPath)
     {
@@ -98,24 +98,28 @@ public class PreviewImageService
         {
             var storageFile = await StorageFile.GetFileFromPathAsync(rawPath);
 
-            // 尝试使用 WIC 提取内嵌预览
+            // 使用独立的 stream 加载内嵌预览
             using var stream = await storageFile.OpenAsync(FileAccessMode.Read);
-
-            // 创建 BitmapDecoder，WIC 会自动尝试提取内嵌预览
             var decoder = await BitmapDecoder.CreateAsync(stream);
 
-            // 获取预览帧（通常是内嵌的 JPG 预览）
-            var bitmap = new BitmapImage();
+            // 检查是否有有效尺寸
+            if (decoder.PixelWidth == 0 || decoder.PixelHeight == 0)
+            {
+                return null;
+            }
 
+            var bitmap = new BitmapImage();
+            
             // 限制解码尺寸
             if (decoder.PixelWidth > MaxPreviewWidth || decoder.PixelHeight > MaxPreviewHeight)
             {
                 bitmap.DecodePixelWidth = MaxPreviewWidth;
             }
 
-            stream.Seek(0);
-            await bitmap.SetSourceAsync(stream);
-
+            // 重新打开 stream 供 bitmap 使用（避免 stream 状态污染）
+            using var bitmapStream = await storageFile.OpenAsync(FileAccessMode.Read);
+            await bitmap.SetSourceAsync(bitmapStream);
+            
             Debug.WriteLine($"成功加载 RAW 内嵌预览: {Path.GetFileName(rawPath)}");
             return bitmap;
         }
