@@ -98,29 +98,14 @@ public class PreviewImageService
         {
             var storageFile = await StorageFile.GetFileFromPathAsync(rawPath);
 
-            // 使用独立的 stream 加载内嵌预览
+            // 使用独立的 stream，让 WIC 优先读取内嵌预览
             using var stream = await storageFile.OpenAsync(FileAccessMode.Read);
-            var decoder = await BitmapDecoder.CreateAsync(stream);
-
-            // 检查是否有有效尺寸
-            if (decoder.PixelWidth == 0 || decoder.PixelHeight == 0)
-            {
-                return null;
-            }
-
+            
+            // 不限制解码尺寸，让 WIC 自动选择内嵌预览
             var bitmap = new BitmapImage();
+            await bitmap.SetSourceAsync(stream);
             
-            // 限制解码尺寸
-            if (decoder.PixelWidth > MaxPreviewWidth || decoder.PixelHeight > MaxPreviewHeight)
-            {
-                bitmap.DecodePixelWidth = MaxPreviewWidth;
-            }
-
-            // 重新打开 stream 供 bitmap 使用（避免 stream 状态污染）
-            using var bitmapStream = await storageFile.OpenAsync(FileAccessMode.Read);
-            await bitmap.SetSourceAsync(bitmapStream);
-            
-            Debug.WriteLine($"成功加载 RAW 内嵌预览: {Path.GetFileName(rawPath)}");
+            Debug.WriteLine($"成功加载 RAW 内嵌预览: {Path.GetFileName(rawPath)}, 尺寸: {bitmap.PixelWidth}x{bitmap.PixelHeight}");
             return bitmap;
         }
         catch (Exception ex)
